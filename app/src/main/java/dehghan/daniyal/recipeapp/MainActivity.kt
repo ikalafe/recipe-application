@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import dehghan.daniyal.recipeapp.screens.RecipeScreen
 import dehghan.daniyal.recipeapp.ui.theme.RecipeAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             RecipeAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-
+                    RecipeScreen(Modifier.padding(innerPadding))
                 }
             }
         }
