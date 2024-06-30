@@ -68,6 +68,8 @@ dependencies {
     implementation(libs.converter.gson)
     //Coil
     implementation(libs.coil.compose)
+    //Navigation Compose
+    implementation(libs.androidx.navigation.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

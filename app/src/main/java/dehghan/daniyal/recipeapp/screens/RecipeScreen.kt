@@ -2,6 +2,7 @@ package dehghan.daniyal.recipeapp.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +15,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,20 +28,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import dehghan.daniyal.recipeapp.model.Category
 import dehghan.daniyal.recipeapp.ui.theme.Gray
+import dehghan.daniyal.recipeapp.ui.theme.OrangeColor
 import dehghan.daniyal.recipeapp.viewmodel.MainViewModel
 
 @Composable
-fun RecipeScreen(modifier: Modifier = Modifier) {
+fun RecipeScreen(modifier: Modifier = Modifier, navigateToDetail: (Category) -> Unit) {
     val recipeViewModel: MainViewModel = viewModel()
     val viewState by recipeViewModel.categoriesState
 
     // Ui Application
-    Box(modifier = Modifier.fillMaxSize().padding(top = 30.dp, bottom = 30.dp)) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 30.dp, bottom = 30.dp)
+    ) {
         when {
 
             // If the data was being loaded
@@ -54,24 +62,24 @@ fun RecipeScreen(modifier: Modifier = Modifier) {
             // If data is found and loaded
             else -> {
                 // Display Categories
-                CategoryScreen(categories = viewState.list)
+                CategoryScreen(categories = viewState.list, navigateToDetail)
             }
         }
     }
 }
 
 @Composable
-fun CategoryScreen(modifier: Modifier = Modifier, categories: List<Category>) {
+fun CategoryScreen(categories: List<Category>, navigateToDetail: (Category) -> Unit) {
     LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.fillMaxSize()) {
         items(categories) { category ->
-            CategoryItem(category = category)
+            CategoryItem(category = category, navigateToDetail)
         }
     }
 }
 
 // How Each Item Look Like
 @Composable
-fun CategoryItem(modifier: Modifier = Modifier, category: Category) {
+fun CategoryItem(category: Category, navigateToDetail: (Category) -> Unit) {
     Column(modifier = Modifier.padding(16.dp)) {
         Box(
             modifier = Modifier
@@ -85,7 +93,9 @@ fun CategoryItem(modifier: Modifier = Modifier, category: Category) {
             Column(
                 modifier = Modifier
                     .padding(8.dp)
-                    .fillMaxSize().clip(RoundedCornerShape(16.dp)),
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(16.dp)),
+                /*.clickable {}*/
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Box(
@@ -107,6 +117,16 @@ fun CategoryItem(modifier: Modifier = Modifier, category: Category) {
                     style = TextStyle(fontWeight = FontWeight.Bold),
                     modifier = Modifier.padding(top = 4.dp)
                 )
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(
+                    onClick = {
+                        navigateToDetail(category)
+                    },
+                    modifier = Modifier.background(color = OrangeColor)
+                ) {
+                    Text("Show Details")
+                }
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
